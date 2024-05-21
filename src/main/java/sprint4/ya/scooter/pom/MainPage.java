@@ -14,12 +14,12 @@ public class MainPage {
 
 
 
-    private final By[] questions = {
+    private static final By[] questions = {
             By.id("accordion__heading-0"), By.id("accordion__heading-1"), By.id("accordion__heading-2"), By.id("accordion__heading-3"),
             By.id("accordion__heading-4"), By.id("accordion__heading-5"), By.id("accordion__heading-6"), By.id("accordion__heading-7")
     };
 
-    private final By[] answers = {
+    private static final By[] answers = {
             By.xpath(".//p[text()='Сутки — 400 рублей. Оплата курьеру — наличными или картой.']"), By.xpath(".//p[text()='Пока что у нас так: один заказ — один самокат. Если хотите покататься с друзьями, можете просто сделать несколько заказов — один за другим.']"),
             By.xpath(".//p[text()='Допустим, вы оформляете заказ на 8 мая. Мы привозим самокат 8 мая в течение дня. Отсчёт времени аренды начинается с момента, когда вы оплатите заказ курьеру. Если мы привезли самокат 8 мая в 20:30, суточная аренда закончится 9 мая в 20:30.']"),
             By.xpath(".//p[text()='Только начиная с завтрашнего дня. Но скоро станем расторопнее.']"), By.xpath(".//p[text()='Пока что нет! Но если что-то срочное — всегда можно позвонить в поддержку по красивому номеру 1010.']"),
@@ -27,8 +27,8 @@ public class MainPage {
             By.xpath(".//p[text()='Да, пока самокат не привезли. Штрафа не будет, объяснительной записки тоже не попросим. Все же свои.']"), By.xpath(".//p[text()='Да, обязательно. Всем самокатов! И Москве, и Московской области.']")
     };
 
-    private final By orderButtonUpper = By.xpath(".//button[@class='Button_Button__ra12g']");
-    private final By orderButtonLower = By.xpath(".//button[@class='Button_Button__ra12g Button_Middle__1CSJM']");
+    private static final By orderButtonUpper = By.xpath(".//button[@class='Button_Button__ra12g']");
+    private static final By orderButtonLower = By.xpath(".//button[@class='Button_Button__ra12g Button_Middle__1CSJM']");
 
 
 
@@ -47,24 +47,42 @@ public MainPage acceptCookie() {
     return this;
 }
 
-public MainPage clickUpperOrderButton() {
-        webDriver.findElement(orderButtonUpper).click();
+public MainPage clickOrderButton(By orderButton) {
+        webDriver.findElement(orderButton).click();
         return this;
 }
- public MainPage clickLowerOrderButton() {
-        webDriver.findElement(orderButtonLower).click();
-        return this;
+
+
+
+public static By getUpperOrderButton() {
+       return  orderButtonUpper;
+
+}
+ public static By getLowerOrderButton() {
+       return orderButtonLower;
+
  }
 
+    public static By getQuestion(int number) {
+        return questions[number];
+    }
+
+    public static By getAnswer(int number) {
+        return answers[number];
+    }
 
 
-public void clickQuestion(int number) {
-        webDriver.findElement(questions[number]).click();
+
+
+    public MainPage clickQuestion(By question) {
+        webDriver.findElement(question).click();
+        return this;
+    }
+
+    public boolean isAnswerShowed(By answer) {
+        return webDriver.findElement(answer).isDisplayed();
+    }
+
+
 }
 
-public boolean isAnswerShowed(int number) {
-    return webDriver.findElement(answers[number]).isDisplayed();
-}
-
-
-}

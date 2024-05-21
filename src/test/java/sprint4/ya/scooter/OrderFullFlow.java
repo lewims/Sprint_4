@@ -30,11 +30,11 @@ public class OrderFullFlow {
         private  final String period;
         private final String color;
         private final String message;
+        private final By orderButton;
 
 
 
-
-        public OrderFullFlow(String name, String surName, String address, By subwayStation, String phoneNumber, String date, String period, String color, String message) {
+        public OrderFullFlow(String name, String surName, String address, By subwayStation, String phoneNumber, String date, String period, String color, String message, By orderButton) {
             this.name = name;
             this.surName = surName;
             this.address = address;
@@ -44,7 +44,7 @@ public class OrderFullFlow {
             this.period = period;
             this.color = color;
             this.message = message;
-
+            this.orderButton = orderButton;
         }
 
 
@@ -55,8 +55,10 @@ public class OrderFullFlow {
 
 
         return new Object[][] {
-                {"Николай", "Наумов", "ул.Пушкина, д.10", CredentialsForOrderPage.getSelectFirstInListStation(), "89697784499", "31 мая", "1 сутки", "чёрный", "Встречу у подъезда"},
-                {"Григорий", "Распутин", "пр-т Водолазов, д.69", CredentialsForOrderPage.getSelectLastInListStation(), "89293332112", "1 июля", "7 суток", "серый", "Очень жду мой самокат ;)"},
+                {"Николай", "Наумов", "ул.Пушкина, д.10", CredentialsForOrderPage.getSelectFirstInListStation(), "89697784499", "31 мая", "1 сутки", "чёрный", "Встречу у подъезда", MainPage.getUpperOrderButton()},
+                {"Николай", "Наумов", "ул.Пушкина, д.10", CredentialsForOrderPage.getSelectFirstInListStation(), "89697784499", "31 мая", "1 сутки", "чёрный", "Встречу у подъезда", MainPage.getLowerOrderButton()},
+                {"Григорий", "Распутин", "пр-т Водолазов, д.69", CredentialsForOrderPage.getSelectLastInListStation(), "89293332112", "1 июля", "7 суток", "серый", "Очень жду мой самокат ;)", MainPage.getLowerOrderButton()},
+                {"Григорий", "Распутин", "пр-т Водолазов, д.69", CredentialsForOrderPage.getSelectLastInListStation(), "89293332112", "1 июля", "7 суток", "серый", "Очень жду мой самокат ;)", MainPage.getUpperOrderButton()},
             };
         }
 
@@ -72,7 +74,7 @@ public class OrderFullFlow {
 
             mainPage.open()
                     .acceptCookie()
-                    .clickUpperOrderButton();
+                    .clickOrderButton(orderButton);
 
 
             credentialsForOrderPage1.insertName(name)
@@ -92,36 +94,7 @@ public class OrderFullFlow {
             Assert.assertFalse("Заказ прошёл неудачно", rentDetailsPage.isDoneOrderNotificationShowed());
 
         }
-         @Test
-    public void fullFlowOfOrderPositiveTestLowerButton() {
-             MainPage mainPage = new MainPage(browserRule.getWebDriver());
-             CredentialsForOrderPage credentialsForOrderPage1 = new CredentialsForOrderPage(browserRule.getWebDriver());
-             RentDetailsPage rentDetailsPage = new RentDetailsPage(browserRule.getWebDriver());
 
-             mainPage.open()
-                     .acceptCookie()
-                     .clickUpperOrderButton();
-
-
-             credentialsForOrderPage1.insertName(name)
-                     .insertSurname(surName)
-                     .insertAddress(address)
-                     .pickSubwayStation(subwayStation)
-                     .insertPhoneNumber(phoneNumber)
-                     .clickNextButton();
-
-             rentDetailsPage.chooseArrivalDate(date)
-                     .chooseRentPeriod(period)
-                     .pickScooterColor(color)
-                     .putMessageForCarrier(message)
-                     .clickFinishOrderButton()
-                     .confirmOrder();
-
-             Assert.assertFalse("Заказ прошёл неудачно", rentDetailsPage.isDoneOrderNotificationShowed());
-
-
-
-         }
 
 
 
